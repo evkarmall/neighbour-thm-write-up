@@ -1,6 +1,6 @@
 # Write-up — IDOR na sala “Neighbour”
 
-## 📌 Visão Geral
+## Visão Geral
 
 Este desafio da plataforma TryHackMe demonstra uma vulnerabilidade clássica de **IDOR (Insecure Direct Object Reference)**, onde é possível acessar recursos de outros usuários manipulando diretamente parâmetros na URL.
 
@@ -32,7 +32,7 @@ guest:guest
 
 ---
 
-## 🔑 Autenticação
+## Autenticação
 
 Utilizando as credenciais encontradas:
 
@@ -45,7 +45,7 @@ Após o login, a aplicação retorna a mensagem:
 
 ---
 
-## 🧠 Enumeração e Análise
+## Enumeração e Análise
 
 A mensagem sugere claramente uma possível exploração envolvendo acesso a perfis de outros usuários.
 
@@ -59,7 +59,7 @@ Também é possível identificar, no código-fonte, menção ao usuário **admin
 
 ---
 
-## 💥 Exploração (IDOR)
+## Exploração (IDOR)
 
 A vulnerabilidade ocorre devido à ausência de validação de autorização no backend.
 
@@ -73,7 +73,7 @@ A aplicação permite acesso ao perfil do usuário administrador **sem qualquer 
 
 ---
 
-## ⚠️ Impacto
+## Impacto
 
 Essa vulnerabilidade permite:
 
@@ -85,7 +85,7 @@ Em um cenário real, poderia resultar em vazamento de informações críticas ou
 
 ---
 
-## 🛠️ Mitigação
+## Mitigação
 
 * Implementar validação de autorização no backend
 * Garantir que usuários só acessem seus próprios recursos
@@ -94,6 +94,6 @@ Em um cenário real, poderia resultar em vazamento de informações críticas ou
 
 ---
 
-## 🧾 Conclusão
+## Conclusão
 
 A sala demonstra de forma simples e eficaz como falhas de controle de acesso podem ser exploradas através de manipulação de parâmetros, reforçando a importância de validações no lado do servidor.
