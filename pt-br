@@ -1,0 +1,99 @@
+# Write-up — IDOR na sala “Neighbour”
+
+## 📌 Visão Geral
+
+Este desafio da plataforma TryHackMe demonstra uma vulnerabilidade clássica de **IDOR (Insecure Direct Object Reference)**, onde é possível acessar recursos de outros usuários manipulando diretamente parâmetros na URL.
+
+---
+
+## Acesso inicial
+
+Ao iniciar a sala, é fornecido um endereço IP da aplicação web:
+
+```
+http://1xx.xx.xx.xx
+```
+
+Ao acessar o site, somos direcionados para uma página de login sem credenciais aparentes.
+
+---
+
+## Descoberta de Credenciais
+
+Na própria interface da aplicação, há a seguinte dica:
+
+> "Don't have an account? Use the guest account! (Ctrl+U)"
+
+Ao inspecionar o código-fonte da página (Ctrl + U), é possível identificar um comentário contendo credenciais de acesso:
+
+```
+guest:guest
+```
+
+---
+
+## 🔑 Autenticação
+
+Utilizando as credenciais encontradas:
+
+* **Usuário:** guest
+* **Senha:** guest
+
+Após o login, a aplicação retorna a mensagem:
+
+> "Hi, guest. Welcome to our site. Try not to peep your neighbor's profile."
+
+---
+
+## 🧠 Enumeração e Análise
+
+A mensagem sugere claramente uma possível exploração envolvendo acesso a perfis de outros usuários.
+
+Observando a URL após o login:
+
+```
+/profile.php?user=guest
+```
+
+Também é possível identificar, no código-fonte, menção ao usuário **admin**, indicando sua existência na aplicação.
+
+---
+
+## 💥 Exploração (IDOR)
+
+A vulnerabilidade ocorre devido à ausência de validação de autorização no backend.
+
+Ao modificar diretamente o parâmetro `user` na URL:
+
+```
+/profile.php?user=admin
+```
+
+A aplicação permite acesso ao perfil do usuário administrador **sem qualquer verificação de permissão**.
+
+---
+
+## ⚠️ Impacto
+
+Essa vulnerabilidade permite:
+
+* Acesso não autorizado a contas de outros usuários
+* Exposição de dados sensíveis
+* Possível comprometimento total da aplicação
+
+Em um cenário real, poderia resultar em vazamento de informações críticas ou controle indevido de contas privilegiadas.
+
+---
+
+## 🛠️ Mitigação
+
+* Implementar validação de autorização no backend
+* Garantir que usuários só acessem seus próprios recursos
+* Utilizar controles de acesso baseados em sessão
+* Evitar exposição direta de identificadores previsíveis
+
+---
+
+## 🧾 Conclusão
+
+A sala demonstra de forma simples e eficaz como falhas de controle de acesso podem ser exploradas através de manipulação de parâmetros, reforçando a importância de validações no lado do servidor.
